@@ -49,7 +49,7 @@ close(INPUT_FILE);
 sub extract_spec_version {
   my $line;
   while($line = <INPUT_FILE>){
-    if($line =~ m/3GPP TS ((25|36)\.331|36\.355) V/){
+    if($line =~ m/3GPP TS ((25|36|38)\.331|36\.355) V/){
       $version = $line;
       return;
     }
@@ -71,7 +71,7 @@ sub extract_asn1 {
       $is_asn1 = 0;
     }
 
-    if($line =~ m/–	LPP-PDU-Definitions/){
+    if($line =~ m/â€“	LPP-PDU-Definitions/){
       $output_file_name = "LPP.asn";
       print  "generating $output_file_name\n";
       open(OUTPUT_FILE, "> $output_file_name") or die "Can not open file $output_file_name";
@@ -89,7 +89,7 @@ sub extract_asn1 {
       $file_name_found = 1;
     }
 
-    if (($line =~ /END/) && (defined fileno OUTPUT_FILE)){
+    if (($line =~ /END$/) && (defined fileno OUTPUT_FILE)){
       syswrite OUTPUT_FILE,"$line";
       close(OUTPUT_FILE);
       $is_asn1 = 0;
